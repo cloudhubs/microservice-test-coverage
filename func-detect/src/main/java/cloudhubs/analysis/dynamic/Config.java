@@ -9,4 +9,10 @@ public class Config {
     private String[] ignoreDirs;
 
     private String outputFile;
+
+    private boolean addGetters;
+
+    private boolean addSetters;
+
+    private boolean addConstructors;
 }

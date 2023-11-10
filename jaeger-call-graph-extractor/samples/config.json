@@ -1,0 +1,7 @@
+{
+    "jaegerApiBaseUrl": "http://localhost:30005/jaeger/ui",
+    "spanKeepTags": [
+        "io.opentelemetry.methods"
+    ],
+    "outputFile": "output.json"
+}

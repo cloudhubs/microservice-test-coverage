@@ -106,11 +106,34 @@ public final class App {
 
                 var methodNames = new HashSet<String>();
 
+                if (config.isAddConstructors())
+                    methodNames.add(className);
+
                 for (var method : c.getMethods().stream().filter(
-                        m -> !isGetMethod(m) && !isSetMethod(m) && !m.isConstructorDeclaration())
+                        m -> (config.isAddGetters() || !isGetMethod(m)) && (config.isAddSetters() || !isSetMethod(m))
+                                && (config.isAddConstructors() || !m.isConstructorDeclaration()))
                         .toList()) {
                     methodNames.add(method.getNameAsString());
                 }
+
+                var addGetters = c.getAnnotationByClass(lombok.Getter.class).isPresent() || c
+                        .getAnnotationByClass(lombok.Data.class).isPresent();
+                var addSetters = c.getAnnotationByClass(lombok.Setter.class).isPresent() || c
+                        .getAnnotationByClass(lombok.Data.class).isPresent();
+
+                if (addGetters && config.isAddGetters())
+                    for (var field : c.getFields()) {
+                        var fieldName = field.getVariable(0).getNameAsString();
+                        var getterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                        methodNames.add(getterName);
+                    }
+
+                if (addSetters && config.isAddSetters())
+                    for (var field : c.getFields()) {
+                        var fieldName = field.getVariable(0).getNameAsString();
+                        var setterName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                        methodNames.add(setterName);
+                    }
 
                 if (!methodNames.isEmpty()) {
                     var classEntry = fullClassName + "[" + String.join(",", methodNames) + "]";

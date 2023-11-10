@@ -1,0 +1,11 @@
+{
+    "rootPath": "path/to/your/project",
+    "ignoreDirs": [
+        "folder/to/ignore/relative/to/rootPath",
+        "file/to/ignore/relative/to/rootPath"
+    ],
+    "outputFile": "path/to/yaml/output/file",
+    "addGetters": true,
+    "addSetters": true,
+    "addConstructors": true
+}
